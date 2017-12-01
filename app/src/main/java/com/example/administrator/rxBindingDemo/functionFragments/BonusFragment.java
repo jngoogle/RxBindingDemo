@@ -18,7 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 
@@ -41,16 +40,21 @@ public class BonusFragment extends Fragment {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer integer) {
-                        bonusBtn.setText("" + integer + "次");
-                        if (integer == 7) {
-                            Toast.makeText(getContext(), "竟然成功连击了7次", Toast.LENGTH_SHORT).show();
-                        }
+                .subscribe(aInteger -> {
+                    bonusBtn.setText("" + aInteger + "次");
+                    if (aInteger == 7) {
+                        Toast.makeText(getContext(), "竟然成功连击了7次", Toast.LENGTH_SHORT).show();
                     }
                 });
-
+//                .subscribe(new Action1<Integer>() {
+//                    @Override
+//                    public void call(Integer integer) {
+//                        bonusBtn.setText("" + integer + "次");
+//                        if (integer == 7) {
+//                            Toast.makeText(getContext(), "竟然成功连击了7次", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
         return layout;
     }
 

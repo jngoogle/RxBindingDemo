@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.functions.Action1;
 
 
 public class DebounceFragment extends Fragment {
@@ -31,12 +30,15 @@ public class DebounceFragment extends Fragment {
         ButterKnife.bind(this, layout);
         RxView.clicks(debounceBtn)
                 .throttleFirst(2, TimeUnit.SECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        Toast.makeText(getContext(), "防抖动按钮", Toast.LENGTH_SHORT).show();
-                    }
+                .subscribe(aVoid -> {
+                    Toast.makeText(getContext(), "防抖动按钮", Toast.LENGTH_SHORT).show();
                 });
+//                .subscribe(new Action1<Void>() {
+//                    @Override
+//                    public void call(Void aVoid) {
+//                        Toast.makeText(getContext(), "防抖动按钮", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
         return layout;
     }
 

@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 public class SearchFragment extends Fragment {
 
@@ -48,34 +46,53 @@ public class SearchFragment extends Fragment {
 
         RxTextView.textChanges(searchEt)
                 .debounce(500, TimeUnit.MILLISECONDS)
-                .map(new Func1<CharSequence, String>() {
-                    @Override
-                    public String call(CharSequence charSequence) {
-                        return charSequence.toString();
-                    }
+                .map(charSequence -> {
+                    return charSequence.toString();
                 })
-                .map(new Func1<String, List<String>>() {
-                    @Override
-                    public List<String> call(String keyword) {
-                        if (!TextUtils.isEmpty(keyword)) {
-                            for (String s : getKeywordsList()) {
-                                if (s != null && s.contains(keyword)) {
-                                    keywordsList.add(s);
-                                }
+                .map(keyword -> {
+                    if (!TextUtils.isEmpty(keyword)) {
+                        for (String s : getKeywordsList()) {
+                            if (s != null && s.contains(keyword)) {
+                                keywordsList.add(s);
                             }
                         }
-                        return keywordsList;
                     }
+                    return keywordsList;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<String>>() {
-                    @Override
-                    public void call(List<String> strings) {
-                        keywordsAdapter.clearDataList();
-                        keywordsAdapter.addDataList(strings);
-                    }
+                .subscribe(keywordList -> {
+                    keywordsAdapter.clearDataList();
+                    keywordsAdapter.addDataList(keywordList);
                 });
-
+//        RxTextView.textChanges(searchEt)
+//                .debounce(500, TimeUnit.MILLISECONDS)
+//                .map(new Func1<CharSequence, String>() {
+//                    @Override
+//                    public String call(CharSequence charSequence) {
+//                        return charSequence.toString();
+//                    }
+//                })
+//                .map(new Func1<String, List<String>>() {
+//                    @Override
+//                    public List<String> call(String keyword) {
+//                        if (!TextUtils.isEmpty(keyword)) {
+//                            for (String s : getKeywordsList()) {
+//                                if (s != null && s.contains(keyword)) {
+//                                    keywordsList.add(s);
+//                                }
+//                            }
+//                        }
+//                        return keywordsList;
+//                    }
+//                })
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<List<String>>() {
+//                    @Override
+//                    public void call(List<String> strings) {
+//                        keywordsAdapter.clearDataList();
+//                        keywordsAdapter.addDataList(strings);
+//                    }
+//                });
         return layout;
     }
 

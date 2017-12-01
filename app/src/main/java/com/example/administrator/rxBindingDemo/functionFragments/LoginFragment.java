@@ -16,7 +16,6 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func2;
 
 
@@ -51,14 +50,16 @@ public class LoginFragment extends Fragment {
                         return false;
                     }
                 })
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean isBtnAvailalbe) {
-                        RxView.enabled(loginBtn).call(isBtnAvailalbe);
-                    }
+                .subscribe(aBoolean -> {
+                    RxView.enabled(loginBtn).call(aBoolean);
                 });
+//                .subscribe(new Action1<Boolean>() {
+//                    @Override
+//                    public void call(Boolean isBtnAvailalbe) {
+//                        RxView.enabled(loginBtn).call(isBtnAvailalbe);
+//                    }
+//                });
 
         return layout;
     }
-
 }
